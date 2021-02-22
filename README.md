@@ -1,21 +1,24 @@
 # flamingo-finance-profit-maximizer
 
-This is a script that uses the compound interest formula to give the user the best possible way of claiming and reinvesting the generated FLM at any given point in time.
-on how many times to reinvest the flamingo generated through staking at flamingo.finance.
-The script uses the CoinMarketCap API to fetch live data on the current prices of the coins used that are needed for the calculations. 
+This profit maximizer is a python script which aims to help investors staking their tokens on flamingo.finance. It is aimed at investors which are looking to reinvest the generated FLM from staking their tokens, in the best way possible. Using live data taken from the CoinMarketCap API, it tries to provide the user with a plan on how often FLM should be claimed and staked again at any given point in time in order to maximize profit. The script that uses the compound interest formula to find out how many times the staked assets should be compounded uaing live market data to produce the highest amount of profit at any given point in time. The main formula that this script uses is the following:
 
-The script calculates the ideal amount of times a user should claim his/her FLM in a given amount of time. Specifically this script calculates it for 1, 3, 6, 9 months and 1 year.
-It is then up to the user to interpret the results and follow the best course of action.
+Profit = current_staked_assets * (1 + ((current_apy * current_price_flm) / x))^(x*t) - transaction_fee*x
 
-# The limitations of the script
+transaction_fee = current_price_gas * 0.011 * 4
+x = the amount of times profit is compounded
+t = time in years - by changing t, the user can adapt the results to maximize profit in any given point in time.
 
-This script gives the ideal scenario at any given point in time. However, there are many variables that this script does not take into account such as the future price volatility of FLM,
-GAS, NEO etc. but only because it is just not possible to predict their prices in the future. This means that following the results of this script will allow the user to be more educated
-on the investement but it will not produce the best possible scenario as that would require predicting the future.
+In the formula above, there are 2 unkowns: P and x. This script finds the x value (which represents how many times FLM should be claimed) that produces the highest P. Specifically 
+it uses the scipy library to achieve this. 
 
-As of yet, the script also does not take the current FLM into account. That is something that needs to be added.
+However, this can also be done by simply graphing the above function and taking x value where P is greatest.
 
-# The strengths of this script
+# The limitations of the profit maximizer
 
-Regardless of the limitations listed above this script is going to produce better results than not having a strategy at all or claiming the FLM at fixed points in time. 
-and that is mainly because it is just not possible to. Such variablthis script does not take into account that t
+This script gives the ideal scenario at any given point in time. In other words, based on current market data it will produce different results everytime. There are variables that just cannot be taken into account such as the price volatilty of the tokens. These have a big impact on the result, but unfortunately none can know the price of a coin in the future. To be clear, this script does not make any calculation to try and guess the prices of coins in the future and that is why it only produces results with the data it fetches from the CoinMarketCap API each time it is run. 
+
+# The strengths of the profit-maximizer
+
+Regardless of the limitations listed above, following this script is almost guaranteed to generate more profit than randomly claiming FLM or claiming FLM at fixed points in time.
+
+Disclaimer: this tool is based on a mathematical formula and does not predict the future. It should be used at your own risk.
