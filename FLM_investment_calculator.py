@@ -42,7 +42,8 @@ try:
   flm_current_rate_of_production_per_year = current_staked_assets * float('1.' + current_apy)
   current_apy = int(current_apy) / 100
   flm_current_rate_of_production_per_day = flm_current_rate_of_production_per_year / 365
-  transaction_fee = (current_price_gas * 0.011) * 4 # In order to reinvest FLM one must first complete 4 transactions paid using GAS
+  # transaction_fee = (current_price_gas * 0.011) * 4 # In order to reinvest FLM one must first complete 4 transactions paid using GAS
+  mymingo_transaction_fee = 0
 
 
 
@@ -53,7 +54,7 @@ try:
 
   # https://stackoverflow.com/questions/10146924/finding-the-maximum-of-a-function
   def compound(x, t):
-    return current_staked_assets * (1 + ((current_apy * current_price_flm) / x))**(x*t) - transaction_fee*x # compound formula
+    return current_staked_assets * (1 + ((current_apy * current_price_flm) / x))**(x*t) - mymingo_transaction_fee*x # compound formula
 
   for key, value in ts.items():
     extremes[value] = scipy.optimize.fmin(lambda x: -compound(x, key), 0).tolist() # Find the maximum of function to find best n
